@@ -15,7 +15,13 @@ export default function Home() {
   }
 
   async function getWorkSpace() {
-    const response = await fetch("/api/getWorkSpace");
+    const data = {
+      username: userName,
+    }
+    const response = await fetch("/api/getWorkSpace", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
     const msg = await response.json().then((data: workSpace) => {
       console.log(data.message);
       return data.message;
