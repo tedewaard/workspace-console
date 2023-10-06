@@ -1,8 +1,13 @@
 import {useState} from 'react';
 
+type workSpace = {
+  message: string
+}
+
 export default function Home() {
   const [userName, setUserName] = useState<string>("");
   const [workSpace, setWorkSpace] = useState<string>("");
+  const [submitted, setSubmitted] = useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent) => {
     const value = (e.target as HTMLInputElement).value;
@@ -11,16 +16,20 @@ export default function Home() {
 
   async function getWorkSpace() {
     const response = await fetch("/api/getWorkSpace");
-    return response.json();
-  }
+    const msg = await response.json().then((data: workSpace) => {
+      console.log(data.message);
+      return data.message;
+    })
+    setWorkSpace(msg);
+    }
 
-  async function handleSubmit(e: React.FormEvent): Promise<void> {
+  async function handleSubmit(e: React.FormEvent) {
+    console.log("test");
     e.preventDefault();
     console.log("Username submitted");
     console.log(userName);
-    const response = await getWorkSpace() as JSON;
-    setWorkSpace(response.message);
-    console.log(workSpace);
+    await getWorkSpace()
+    setSubmitted(true);
   };
 
   return (
@@ -42,6 +51,9 @@ export default function Home() {
           </div>
         </form>
       </div>
+        <div className={submitted ? "" : "hidden"}>
+          {workSpace}
+        </div>
     </>
   );
 }
