@@ -14,6 +14,7 @@ export default async function handler(
     console.log(req.body);
     const userObj = JSON.parse(req.body);
     const user: string = userObj.username;
-    const workSpace = await getWorkSpace(user, "HMI")
+    const domain: string = userObj.domain;
+    const workSpace = await getWorkSpace(user, domain)
     res.status(200).json({message: JSON.stringify(workSpace)})
 }

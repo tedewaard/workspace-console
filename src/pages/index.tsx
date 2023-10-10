@@ -6,17 +6,24 @@ type workSpace = {
 
 export default function Home() {
   const [userName, setUserName] = useState<string>("");
+  const [domain, setDomain] = useState<string>("");
   const [workSpace, setWorkSpace] = useState<string>("");
   const [submitted, setSubmitted] = useState<boolean>(false);
 
-  const handleChange = (e: React.ChangeEvent) => {
+  const handleUsername = (e: React.ChangeEvent) => {
     const value = (e.target as HTMLInputElement).value;
     setUserName(value);
+  }
+
+  const handleDomain = (e: React.ChangeEvent) => {
+    const value = (e.target as HTMLInputElement).value;
+    setDomain(value);
   }
 
   async function getWorkSpace() {
     const data = {
       username: userName,
+      domain: domain,
     }
     const response = await fetch("/api/getWorkSpace", {
       method: "POST",
@@ -30,10 +37,8 @@ export default function Home() {
     }
 
   async function handleSubmit(e: React.FormEvent) {
-    console.log("test");
     e.preventDefault();
     console.log("Username submitted");
-    console.log(userName);
     await getWorkSpace()
     setSubmitted(true);
   };
@@ -47,10 +52,17 @@ export default function Home() {
             <input
               className="bg-slate-200 rounded-lg ml-2"
               value={userName}
-              onChange={handleChange}
+              onChange={handleUsername}
               type="text"
               name="username"
             ></input>
+          </div>
+          <div className="flex flex-row">
+            <p className="mr-6">Domain: </p>
+            <input type="radio" name="domain" value="HMI" onChange={handleDomain}></input>
+            <label className="mr-5">HMI</label>
+            <input type="radio" name="domain" value="Knoll" onChange={handleDomain}></input>
+            <label>Knoll</label>
           </div>
           <div className="flex justify-center mt-5">
             <button className="border-2 rounded-md w-20" type="submit">Search</button>
