@@ -11,7 +11,7 @@ export default async function handler(
 ) {
     //const workSpace = await getWorkSpace("ted6n5", "HMI")
     //console.log(workSpace);
-    console.log(req.body);
+    //console.log(req.body);
     const userObj = JSON.parse(req.body);
     const user: string = userObj.username;
     const domain: string = userObj.domain;
